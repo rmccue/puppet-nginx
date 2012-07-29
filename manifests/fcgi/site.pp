@@ -42,9 +42,11 @@ define nginx::fcgi::site(
   $listen              = '80',
   $server_name         = undef,
   $access_log          = undef,
+  $front_controller    = undef,
   $ssl_certificate     = undef,
   $ssl_certificate_key = undef,
-  $ssl_session_timeout = '5m') {
+  $ssl_session_timeout = '5m',
+  $template = 'nginx/fcgi_site.erb') {
 
   $real_server_name = $server_name ? {
     undef   => $name,
@@ -80,7 +82,7 @@ define nginx::fcgi::site(
 
   nginx::site { $name:
     ensure  => $ensure,
-    content => template('nginx/fcgi_site.erb'),
+    content => template($template),
   }
 }
 
